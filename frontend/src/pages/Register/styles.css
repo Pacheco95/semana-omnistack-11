@@ -22,7 +22,7 @@
 
 .register-container .content section {
   width: 100%;
-  min-width: 380px;
+  max-width: 380px;
 }
 
 .register-container .content section h1 {
