@@ -21,6 +21,7 @@ module.exports = {
       .header('X-Page-Size', PAGE_SIZE)
       .json(incidents);
   },
+
   async create (request, response) {
     const ong = ({title, description, value} = request.body);
 
@@ -30,6 +31,7 @@ module.exports = {
 
     return response.json({ id });
   },
+  
   async delete (request, response) {
     const incidentIdToDelete = request.params.id;
     
