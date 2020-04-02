@@ -4,8 +4,8 @@
   "description": "Semana OmniStack 11",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/server.js",
+    "test": "cross-env NODE_ENV=test jest"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +13,15 @@
   "dependencies": {
     "celebrate": "^12.0.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "http-status-codes": "^1.4.0",
-    "knex": "^0.20.13",
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "jest": "^25.2.6",
+    "knex": "^0.20.13",
+    "supertest": "^4.0.2"
   }
 }
