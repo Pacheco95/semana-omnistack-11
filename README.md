@@ -16,11 +16,11 @@ O projeto está separado em 3 módulos, sendo eles:
 ## Funcionalidades atuais
 
 * Cadastrar uma nova ONG
-* Cadastrar um projeto de um ONG
-* Deletar um projeto de um ONG
-* Listar todos os projetos de um ONG
-* Login \& ogout
-* Entrar em contato com uma ONG via E-mail e Whatsapp
+* Cadastrar um projeto de uma ONG
+* Deletar um projeto de uma ONG
+* Listar todos os projetos de uma ONG
+* Login \& Logout
+* Entrar em contato com uma ONG via E-mail e/ou Whatsapp
 
 ## Implementações futuras
 
