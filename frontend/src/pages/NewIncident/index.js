@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 import './styles.css';
 import logoImg from '../../assets/logo.svg';
 import { useState } from 'react';
 import api from '../../services/api';
-import { toast } from 'react-toastify';
-import { useEffect } from 'react';
+import { isAuthenticated } from '../../Validators/AuthValidator';
+
 
 export default function NewIncident() {
   const [title, setTitle] = useState('');
@@ -17,9 +19,7 @@ export default function NewIncident() {
   const history = useHistory();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      localStorage.clear();
+    if (!isAuthenticated()) {
       history.push('/');
       toast.info('Parece que sua sessão expirou! Faça login novamente.');
     }

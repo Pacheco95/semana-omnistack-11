@@ -11,6 +11,8 @@ import api from '../../services/api';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { isAuthenticated } from '../../Validators/AuthValidator';
+
 export default function Logon() {
 
   const [email, setEmail] = useState('');
@@ -19,8 +21,7 @@ export default function Logon() {
   const history = useHistory();
 
   useState(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
+    if (isAuthenticated()) {
       history.push('/profile');
     }
   }, []);
