@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import {FiLogIn} from 'react-icons/fi';
+import { FiLogIn } from 'react-icons/fi';
+import * as HttpStatus from 'http-status-codes';
 
 import './styles.css';
 import heroesImg from '../../assets/heroes.png';
@@ -8,35 +9,53 @@ import logoImg from '../../assets/logo.svg';
 
 import api from '../../services/api';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function Logon() {
 
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const history = useHistory();
 
   async function handleLogin(e) {
     e.preventDefault();
 
-    try {
-      const response = await api.post('sessions', {id});
-      localStorage.setItem('ongId', id);
-      localStorage.setItem('ongName', response.data.name);
+    api.post('authenticate', { email, password })
+      .then(response => {
 
-      history.push('/profile');
-    } catch (error) {
-      alert('Falha no login. Tente novamente');
-    }
+        if (response.status === HttpStatus.UNAUTHORIZED) {
+          sessionStorage.clear();
+          toast.error('Parece que sua sessão expirou. Faça o login novamente');
+          history.push('/');
+        }
+
+        const { ong, token } = response.data;
+
+        localStorage.setItem('ongId', ong.id);
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('ongName', ong.name);
+
+        history.push('/profile');
+      }).catch(error => {
+        const { NOT_FOUND, BAD_REQUEST } = HttpStatus;
+        if (~[NOT_FOUND, BAD_REQUEST].indexOf(error.response.status)) {
+          toast.error('Login inválido');
+        } else {
+          toast.error('Falha no login. Tente novamente');
+        }
+      })
   }
 
   return (
     <div className="logon-container">
       <section className="form">
-        <img src={logoImg} alt="Be The Hero"/>
+        <img src={logoImg} alt="Be The Hero" />
 
         <form onSubmit={handleLogin}>
           <h1>Faça seu logon</h1>
-          <input placeholder="Sua ID" value={id} onChange={e => setId(e.target.value)}/>
+          <input placeholder="E-mail" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          <input placeholder="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)} />
           <button className="button" type="submit">Entrar</button>
           <Link className="back-link" to="/register">
             <FiLogIn size={16} color="#e02041" />
@@ -45,7 +64,7 @@ export default function Logon() {
         </form>
       </section>
 
-      <img src={heroesImg} alt="Heroes"/>
+      <img src={heroesImg} alt="Heroes" />
     </div>
   );
 }

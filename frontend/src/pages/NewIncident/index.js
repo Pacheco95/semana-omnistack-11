@@ -6,46 +6,59 @@ import './styles.css';
 import logoImg from '../../assets/logo.svg';
 import { useState } from 'react';
 import api from '../../services/api';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 export default function NewIncident() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [value, setValue] = useState('');
 
-  const ongId = localStorage.getItem('ongId');
-
   const history = useHistory();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      localStorage.clear();
+      history.push('/');
+      toast.info('Parece que sua sessão expirou! Faça login novamente.');
+    }
+  }, [history]);
 
   async function handleNewIncident(e) {
     e.preventDefault();
 
-    const data = {title, description, value};
+    const accessToken = localStorage.getItem('accessToken');
 
-    try {
-      await api.post('/incidents', data, {
-        headers: {
-          Authorization: ongId
+    const data = { title, description, value };
+
+    api.post('/incidents', data, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+      .then(() => history.push('/profile'))
+      .catch(error => {
+        if (error.response?.data?.error) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error('Erro ao fazer cadastro. Tente novamente.');
         }
       });
-
-      history.push('/profile');
-    } catch (error) {
-      alert('Falha ao cadastrar caso. Tente novamente.');
-    }
   }
 
   return (
     <div className="new-incident-container">
       <div className="content">
         <section>
-          <img src={logoImg} alt="Be The Hero"/>
-          
+          <img src={logoImg} alt="Be The Hero" />
+
           <h1>Cadastrar novo caso</h1>
           <p>Descreva o caso detalhadamente para encontrar um herói para resolver isso.</p>
 
           <Link className="back-link" to="/profile">
             <FiArrowLeft size={16} color="#e02041" />
-            Voltar para home
+            Voltar para perfil
           </Link>
 
         </section>

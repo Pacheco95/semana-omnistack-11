@@ -1,12 +1,14 @@
+const bounds = require('../../config/bounds.json').tables.incidents.fields;
+
 exports.up = function(knex) {
   return knex.schema.createTable('incidents', table => {
     table.increments();
-    table.string('title').notNullable();
-    table.string('description').notNullable();
-    table.decimal('value').notNullable();
+    table.string('title', bounds.title.length.max).notNullable();
+    table.string('description', bounds.description.length.max).notNullable();
+    table.decimal('value', bounds.value.precision).notNullable();
     
-    table.string('ong_id').notNullable();
-    table.foreign('ong_id').references('id').inTable('ongs');
+    table.string('ongId', bounds.ongId.length.max).notNullable();
+    table.foreign('ongId').references('id').inTable('ongs');
   });  
 };
 

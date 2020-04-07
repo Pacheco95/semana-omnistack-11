@@ -7,19 +7,22 @@ const IncidentControllerValidators = require('./validators/IncidentControllerVal
 const OngController = require('./controllers/OngController');
 const IncidentController = require('./controllers/IncidentController');
 const ProfileController = require('./controllers/ProfileController');
-const SessionController = require('./controllers/SessionController');
+const AuthController = require('./controllers/AuthController');
+
+const authMiddleware = require('./middlewares/auth');
 
 const routes = express.Router();
+
+routes.post('/authenticate', AuthController.authenticate);
 
 routes.get('/ongs', OngController.index);
 routes.post('/ongs', OngControllerValidators.create, OngController.create);
 
-routes.get('/profile', ProfileControllerValidators.index, ProfileController.index);
-
-routes.post('/sessions', SessionController.create);
+routes.get('/profile', authMiddleware, ProfileControllerValidators.index, ProfileController.index);
 
 routes.get('/incidents', IncidentController.index);
-routes.post('/incidents', IncidentController.create);
-routes.delete('/incidents/:id',IncidentControllerValidators.delete, IncidentController.delete);
+// TODO validate new incident params
+routes.post('/incidents', authMiddleware, IncidentController.create);
+routes.delete('/incidents/:id', authMiddleware, IncidentControllerValidators.delete, IncidentController.delete);
 
 module.exports = routes;

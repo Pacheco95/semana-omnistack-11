@@ -2,10 +2,10 @@ const dbconn = require('../database/connection');
 
 module.exports = {
   async index (request, response) {
-    const ongId = request.headers.authorization;
+    const ongId = request.ongId;
 
     const incidents = await dbconn('incidents')
-      .where('ong_id', ongId)
+      .where('ongId', ongId)
       .select('*');
     
     return response.json(incidents);
