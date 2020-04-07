@@ -56,4 +56,6 @@ $ cd mobile && npm install && npm start
 ---
 
 Para executar o aplicativo será necessário que você instale o [expo](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=pt_BR).  
-Após executar `npm start` no diretório `mobile` basta abrir o aplicativo do expo e escanear o QRCode. É necessário que o computador e o smartphone estejam conectados na mesma rede.
+É necessário que o computador e o smartphone estejam conectados na mesma rede.
+Após executar `npm start` no diretório `mobile` basta abrir o aplicativo do expo e escanear o QRCode.
+Na tela do expo você deverá copiar o endereço ip (não precisa da porta) e atualizá-lo no arquivo [api.js](src/services/api.js)
