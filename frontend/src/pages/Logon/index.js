@@ -18,6 +18,13 @@ export default function Logon() {
 
   const history = useHistory();
 
+  useState(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      history.push('/profile');
+    }
+  }, []);
+
   async function handleLogin(e) {
     e.preventDefault();
 
