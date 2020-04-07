@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { seconds, days } = require('time-convert')
 
 const { findOngByEmail } = require('../utils/commonQueries');
-const { ongNotFoundResponse, invalidPasswordResponse } = require('../utils/commonResponses');
+const { invalidLogin } = require('../utils/commonResponses');
 const { validatePassword } = require('../utils/commonValidations');
 const authConfig = require('../config/auth');
 
@@ -18,12 +18,9 @@ module.exports = {
 
     const ong = await findOngByEmail(email);
 
-    if (!ong) {
-      return ongNotFoundResponse(request, response);
-    }
   
-    if (!validatePassword(password, ong.password)) {
-      return invalidPasswordResponse(request, response);
+    if (!ong || !validatePassword(password, ong.password)) {
+      return invalidLogin(request, response);
     }
   
     const token = generateJWTToken({ id: ong.id });

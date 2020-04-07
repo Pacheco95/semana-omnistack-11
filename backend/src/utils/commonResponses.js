@@ -7,15 +7,9 @@ module.exports = {
     });
   },
 
-  ongNotFoundResponse(request, response) {
-    return response.status(HttpStatus.NOT_FOUND).json({
-      error: 'ONG não cadastrada'
-    });
-  },
-
-  invalidPasswordResponse(request, response) {
+  invalidLogin(request, response) {
     return response.status(HttpStatus.BAD_REQUEST).json({
-      error: 'Senha inválida'
+      error: 'Login inválido'
     });
   }
 };
