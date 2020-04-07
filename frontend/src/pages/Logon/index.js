@@ -2,16 +2,15 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
 import * as HttpStatus from 'http-status-codes';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import './styles.css';
 import heroesImg from '../../assets/heroes.png';
 import logoImg from '../../assets/logo.svg';
-
 import api from '../../services/api';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-
 import { isAuthenticated } from '../../Validators/AuthValidator';
+import { matchAny } from '../../utils';
 
 export default function Logon() {
 
@@ -47,7 +46,7 @@ export default function Logon() {
         history.push('/profile');
       }).catch(error => {
         const { NOT_FOUND, BAD_REQUEST } = HttpStatus;
-        if (~[NOT_FOUND, BAD_REQUEST].indexOf(error.response.status)) {
+        if (matchAny(error.response.status, NOT_FOUND, BAD_REQUEST)) {
           toast.error('Login inválido');
         } else {
           toast.error('Falha no login. Tente novamente');

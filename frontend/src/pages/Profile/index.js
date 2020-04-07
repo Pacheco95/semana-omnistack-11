@@ -29,6 +29,7 @@ export default function Profile() {
     }).catch(err => {
       if (err.response.status === HttpStatus.UNAUTHORIZED) {
         toast.info('Sua sessão expirou. Faça login novamente');
+        localStorage.clear();
         history.push('/');
       } else {
         toast.error('Falha ao tentar encontrar os casos. Tente fazer login novamente');
